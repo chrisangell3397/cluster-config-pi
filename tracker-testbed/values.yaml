@@ -1,13 +1,17 @@
 # Data store
 mongo:
-  # Image and version number
+  # Image and version number (macOS)
+  #image:
+  #  repository: mongo
+  #  tag: "8.0"
+  # Image and version number (pi)
   image:
-    repository: mongo
-    tag: "8.0"
+    repository: apcheamitru/arm32v7-mongo
+    tag: 3.2.20
 
   # Expose ports
   port: 27017
-  database: trackerTestbed
+  database: tracker-testbed
   
   # Define storage size for the MongoDB data store
   storage:
@@ -18,7 +22,7 @@ service:
   replicaCount: 1
   image:
     repository: chrisah2/tracker-testbed-service
-    tag: 0.3
+    tag: 0.3-armhf
     pullPolicy: Always
 
   # Expose ports

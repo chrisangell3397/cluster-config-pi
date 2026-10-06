@@ -3,7 +3,7 @@
 # Helm Chart
 # ---------------
 apiVersion: v2
-name: trackerTestbed
+name: tracker-testbed
 description: Data store, service and application for the Tracker Testbed
 type: application
 version: 0.1.0

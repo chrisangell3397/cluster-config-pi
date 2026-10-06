@@ -32,14 +32,8 @@ spec:
               value: {{ .Values.service.env.NODE_ENV | quote }}
 
             - name: SERVER_ADDRESS
-              value: "{{ .Release.Name }}-mongodb"
+              value: "{{ .Release.Name }}-mongodb:{{ .Values.mongo.port }}"
             
-            - name: MONGO_HOST
-              value: "{{ .Release.Name }}-mongodb"
-
-            - name: MONGO_PORT
-              value: "{{ .Values.mongo.port }}"
-
             - name: MONGO_DATABASE
               value: {{ .Values.mongo.database | quote }}
 

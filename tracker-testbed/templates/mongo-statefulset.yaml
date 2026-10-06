@@ -43,14 +43,12 @@ spec:
               mountPath: /data/db
 
           readinessProbe:
-            exec:
-              command:
-                - mongo
-                - --quiet
-                - --eval
-                - "db.adminCommand('ping').ok"
+            tcpSocket:
+              port: 27017
             initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
 
   volumeClaimTemplates:
     - metadata:

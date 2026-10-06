@@ -1,0 +1,12 @@
+# ---------------
+# Tracker Testbed
+# Helm Chart
+# ---------------
+apiVersion: v2
+name: trackerTestbed
+description: Data store, service and application for the Tracker Testbed
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+
+# End of file

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-service
+  labels:
+    app: {{ .Release.Name }}-service
+spec:
+  replicas: {{ .Values.service.replicaCount }}
+
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-service
+
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-service
+
+    spec:
+      containers:
+        - name: service
+
+          image: "{{ .Values.service.image.repository }}:{{ .Values.service.image.tag }}"
+
+          imagePullPolicy: {{ .Values.service.image.pullPolicy }}
+
+          ports:
+            - containerPort: {{ .Values.service.port }}
+
+          env:
+            - name: NODE_ENV
+              value: {{ .Values.service.env.NODE_ENV | quote }}
+
+            - name: SERVER_ADDRESS
+              value: "{{ .Release.Name }}-mongodb"
+            
+            - name: MONGO_HOST
+              value: "{{ .Release.Name }}-mongodb"
+
+            - name: MONGO_PORT
+              value: "{{ .Values.mongo.port }}"
+
+            - name: MONGO_DATABASE
+              value: {{ .Values.mongo.database | quote }}
+
+          #readinessProbe:
+          #  httpGet:
+          #    path: /health
+          #    port: {{ .Values.service.port }}
+          #  initialDelaySeconds: 10
+          #  periodSeconds: 10
+
+          #livenessProbe:
+          #  httpGet:
+          #    path: /health
+          #    port: {{ .Values.service.port }}
+          #  initialDelaySeconds: 30
+          #  periodSeconds: 30

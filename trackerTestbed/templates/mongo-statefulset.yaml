@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}-mongodb
+
+spec:
+  serviceName: {{ .Release.Name }}-mongodb
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-mongodb
+
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-mongodb
+
+    spec:
+      containers:
+        - name: mongodb
+
+          image: "{{ .Values.mongo.image.repository }}:{{ .Values.mongo.image.tag }}"
+
+          ports:
+            - containerPort: {{ .Values.mongo.port }}
+
+          env:
+            - name: MONGO_INITDB_DATABASE
+              value: {{ .Values.mongo.database | quote }}
+
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: {{ .Values.mongo.username | quote }}
+
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-mongo
+                  key: password
+
+          volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+
+          readinessProbe:
+            exec:
+              command:
+                - mongosh
+                - --quiet
+                - --eval
+                - "db.adminCommand('ping').ok"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mongo-data
+
+      spec:
+        accessModes:
+          - ReadWriteOnce
+
+        resources:
+          requests:
+            storage: {{ .Values.mongo.storage.size }}

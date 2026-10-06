@@ -1,0 +1,30 @@
+# Data store
+mongo:
+  # Image and version number
+  image:
+    repository: mongo
+    tag: "8.0"
+
+  # Expose ports
+  port: 27017
+  database: trackerTestbed
+  
+  # Define storage size for the MongoDB data store
+  storage:
+    size: 5Gi
+    
+# Service (includes API)
+service:
+  replicaCount: 1
+  image:
+    repository: chrisah2/tracker-testbed-service
+    tag: 0.3
+    pullPolicy: Always
+
+  # Expose ports
+  port: 3000
+
+  # Environment variables
+  env:
+    NODE_ENV: production
+# End of file

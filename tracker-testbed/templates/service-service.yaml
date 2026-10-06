@@ -11,4 +11,10 @@ spec:
       port: 3000
       targetPort: {{ .Values.service.port }}
 
-  type: ClusterIP
+  # Export port to external network (e.g. for testing)
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000

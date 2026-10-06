@@ -22,7 +22,7 @@ service:
   replicaCount: 1
   image:
     repository: chrisah2/tracker-testbed-service
-    tag: 0.3-armhf
+    tag: 0.4-armhf
     pullPolicy: Always
 
   # Expose ports
